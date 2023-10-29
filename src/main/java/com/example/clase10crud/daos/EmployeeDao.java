@@ -42,7 +42,31 @@ public class EmployeeDao {
     }
 
     public void create(Employee employee){
-        //TODO
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/employees";
+
+        String sql = "insert into employees (emp_no, birth_date, first_name, last_name, gender, hire_date) values(?,?,?,?,?,?)";
+
+        try(Connection conn = DriverManager.getConnection(url,username,password);
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setInt(1,employee.getEmpNo());
+            pstmt.setString(2,employee.getBirthDate());
+            pstmt.setString(3,employee.getFirstName());
+            pstmt.setString(4,employee.getLastName());
+            pstmt.setString(5,employee.getGender());
+            pstmt.setString(6,employee.getHireDate());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Employee buscarPorId(String id){
@@ -84,7 +108,32 @@ public class EmployeeDao {
     }
 
     public void actualizar(Employee employee){
-        // TODO
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String url = "jdbc:mysql://localhost:3306/employees";
+
+        String sql = "update employees set birth_date=?, first_name=?, last_name=?, gender=?, hire_date=? where emp_no=?";
+
+        try(Connection conn = DriverManager.getConnection(url,username,password);
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+
+            pstmt.setString(1,employee.getBirthDate());
+            pstmt.setString(2,employee.getFirstName());
+            pstmt.setString(3,employee.getLastName());
+            pstmt.setString(4,employee.getGender());
+            pstmt.setString(5,employee.getHireDate());
+            pstmt.setInt(6,employee.getEmpNo());
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void borrar(String employeeNo) throws SQLException {
@@ -170,7 +219,24 @@ public class EmployeeDao {
     }
 
     public int searchLastId() {
-        // TODO
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String url = "jdbc:mysql://localhost:3306/employees";
+
+        String sql = "select emp_no from employees order by emp_no desc limit 1";
+
+        try(Connection conn = DriverManager.getConnection(url,username,password);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()){
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return 0;
     }
 }
