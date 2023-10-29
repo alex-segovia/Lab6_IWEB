@@ -40,7 +40,7 @@
                     <label>hire date</label>
                     <input type="text" class="form-control" name="hireDate">
                 </div>
-                <a href="<%=request.getContextPath()%>/EmployeeServlet" class="btn btn-danger">Regresar</a>
+                <a href="<%=request.getContextPath()%>/EmployeeServlet?limit=10&offset=0" class="btn btn-danger">Regresar</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
