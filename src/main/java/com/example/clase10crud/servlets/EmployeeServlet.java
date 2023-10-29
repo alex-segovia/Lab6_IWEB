@@ -79,10 +79,10 @@ public class EmployeeServlet extends HttpServlet {
 
         switch (action){
             case "crear":
-                int empNo = employeeDao.searchLastId();
+                int empNo = employeeDao.searchLastId()+1;
                 String birthDate = request.getParameter("birthDate");
                 String firstName = request.getParameter("firstName");
-                String lastName = request.getParameter("LastName");
+                String lastName = request.getParameter("lastName");
                 String gender = request.getParameter("gender");
                 String hireDate = request.getParameter("hireDate");
 
@@ -102,7 +102,7 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate);
 
                     employeeDao.create(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeSerlvet");
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=10&offset=0");
                 }else{
                     request.getRequestDispatcher("employee/form_new.jsp").forward(request,response);
                 }
@@ -135,7 +135,7 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate2);
 
                     employeeDao.actualizar(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet");
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=10&offset=0");
                 }else{
                     request.setAttribute("employee",employeeDao.buscarPorId(empNo2));
                     request.getRequestDispatcher("employee/form_edit.jsp").forward(request,response);

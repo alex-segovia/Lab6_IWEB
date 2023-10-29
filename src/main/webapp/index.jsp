@@ -7,7 +7,7 @@
     <body>
         <h1>Administración de Employees</h1>
         <br/>
-        <a href="EmployeeServlet">Lista de Employees</a>
-        <a href="TitleServlet">Lista de Titles</a>
+        <a href="EmployeeServlet?limit=10&offset=0">Lista de Employees</a>
+        <a href="TitleServlet?limit=10&offset=0">Lista de Titles</a>
     </body>
 </html>
