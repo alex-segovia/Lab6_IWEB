@@ -25,17 +25,16 @@ public class EmployeeServlet extends HttpServlet {
         String action = request.getParameter("action") == null ? "lista" : request.getParameter("action");
 
         EmployeeDao employeeDao = new EmployeeDao();
-
         switch (action){
             case "lista":
                 int limit=Integer.parseInt(request.getParameter("limit"));
                 int offset=Integer.parseInt(request.getParameter("offset"));
+                request.setAttribute("limit",limit);
+                request.setAttribute("offset",limit);
                 //saca del modelo
                 ArrayList<Employee> list = employeeDao.list(limit,offset);
                 //mandar la lista a la vista -> job/lista.jsp
                 request.setAttribute("lista",list);
-                request.setAttribute("limit",limit);
-                request.setAttribute("offset",limit);
                 RequestDispatcher rd = request.getRequestDispatcher("employee/lista.jsp");
                 rd.forward(request,response);
                 break;
@@ -64,7 +63,7 @@ public class EmployeeServlet extends HttpServlet {
                         System.out.println("Log: excepcion: " + e.getMessage());
                     }
                 }
-                response.sendRedirect(request.getContextPath() + "/EmployeeServlet");
+                response.sendRedirect(request.getContextPath() + "/EmployeeServlet?");
                 break;
         }
     }
@@ -72,9 +71,11 @@ public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-
+        int limit=Integer.parseInt(request.getParameter("limit"));
+        int offset=Integer.parseInt(request.getParameter("offset"));
         EmployeeDao employeeDao = new EmployeeDao();
-
+        request.setAttribute("limit",limit);
+        request.setAttribute("offset",offset);
         String action = request.getParameter("action") == null ? "crear" : request.getParameter("action");
 
         switch (action){
@@ -102,7 +103,7 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate);
 
                     employeeDao.create(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=10&offset=0");
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit="+limit+"&offset="+offset);
                 }else{
                     request.getRequestDispatcher("employee/form_new.jsp").forward(request,response);
                 }
@@ -135,7 +136,7 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate2);
 
                     employeeDao.actualizar(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=10&offset=0");
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit="+limit+"&offset="+offset);
                 }else{
                     request.setAttribute("employee",employeeDao.buscarPorId(empNo2));
                     request.getRequestDispatcher("employee/form_edit.jsp").forward(request,response);
@@ -143,8 +144,6 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "s":
                 String textBuscar = request.getParameter("textoBuscar");
-                int limit=Integer.parseInt(request.getParameter("limit"));
-                int offset=Integer.parseInt(request.getParameter("offset"));
                 ArrayList<Employee> lista = employeeDao.searchByName(textBuscar,limit,offset);
                 request.setAttribute("lista",lista);
                 request.setAttribute("busqueda",textBuscar);

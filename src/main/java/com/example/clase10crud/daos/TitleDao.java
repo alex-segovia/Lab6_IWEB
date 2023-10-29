@@ -21,9 +21,7 @@ public class TitleDao {
         }
 
         String url = "jdbc:mysql://localhost:3306/employees";
-
-        // TODO: update query
-        String sql = "select * from titles limit ? offset ?";
+        String sql = "select t.emp_no,t.title,t.from_date,t.to_date from titles t inner join (select emp_no as 'emp_no',max(from_date) as 'from_date' from titles group by emp_no having max(from_date)) sub on t.emp_no=sub.emp_no and t.from_date=sub.from_date limit ? offset ? ";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -37,7 +35,6 @@ public class TitleDao {
                     title.setTitle(rs.getString(2));
                     title.setFromDate(rs.getString(3));
                     title.setToDate(rs.getString(4));
-
                     lista.add(title);
                 }
             }
@@ -47,7 +44,6 @@ public class TitleDao {
 
         return lista;
     }
-
     public void create(Title title){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -156,6 +152,6 @@ public class TitleDao {
             pstmt.setString(2,title);
             pstmt.setString(3,fromDate);
             pstmt.executeUpdate();
-        }
-    }
+}
+}
 }
