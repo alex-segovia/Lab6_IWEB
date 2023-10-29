@@ -71,11 +71,9 @@ public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        int limit=Integer.parseInt(request.getParameter("limit"));
-        int offset=Integer.parseInt(request.getParameter("offset"));
+
         EmployeeDao employeeDao = new EmployeeDao();
-        request.setAttribute("limit",limit);
-        request.setAttribute("offset",offset);
+
         String action = request.getParameter("action") == null ? "crear" : request.getParameter("action");
 
         switch (action){
@@ -103,7 +101,7 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate);
 
                     employeeDao.create(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit="+limit+"&offset="+offset);
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=100&offset=0");
                 }else{
                     request.getRequestDispatcher("employee/form_new.jsp").forward(request,response);
                 }
@@ -136,13 +134,18 @@ public class EmployeeServlet extends HttpServlet {
                     employee.setHireDate(hireDate2);
 
                     employeeDao.actualizar(employee);
-                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit="+limit+"&offset="+offset);
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet?limit=100&offset=0");
                 }else{
                     request.setAttribute("employee",employeeDao.buscarPorId(empNo2));
                     request.getRequestDispatcher("employee/form_edit.jsp").forward(request,response);
                 }
                 break;
             case "s":
+                int limit=Integer.parseInt(request.getParameter("limit"));
+                int offset=Integer.parseInt(request.getParameter("offset"));
+                request.setAttribute("limit",limit);
+                request.setAttribute("offset",offset);
+
                 String textBuscar = request.getParameter("textoBuscar");
                 ArrayList<Employee> lista = employeeDao.searchByName(textBuscar,limit,offset);
                 request.setAttribute("lista",lista);
