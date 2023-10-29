@@ -21,22 +21,22 @@
             -->
             <form method="post" action="<%=request.getContextPath()%>/TitleServlet">
                 <div class="mb-3">
-                    <label>first name</label>
-                    <input type="text" class="form-control" name="firstName">
+                    <label>emp no</label>
+                    <input type="text" class="form-control" name="empNo">
                 </div>
                 <div class="mb-3">
-                    <label>last name</label>
-                    <input type="text" class="form-control" name="lastName">
+                    <label>title</label>
+                    <input type="text" class="form-control" name="title">
                 </div>
                 <div class="mb-3">
-                    <label>gender</label>
-                    <input type="text" class="form-control" name="gender">
+                    <label>from date</label>
+                    <input type="text" class="form-control" name="fromDate">
                 </div>
                 <div class="mb-3">
-                    <label>hire date</label>
-                    <input type="text" class="form-control" name="hireDate">
+                    <label>to date</label>
+                    <input type="text" class="form-control" name="toDate">
                 </div>
-                <a href="<%=request.getContextPath()%>/TitleServlet" class="btn btn-danger">Regresar</a>
+                <a href="<%=request.getContextPath()%>/TitleServlet?limit=10&offset=0" class="btn btn-danger">Regresar</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

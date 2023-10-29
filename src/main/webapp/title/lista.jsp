@@ -39,8 +39,8 @@
             </td>
             <td><%=title.getToDate()%>
             </td>
-            <td><a class="btn btn-success" href="<%=request.getContextPath()%>/TitleServlet?action=edit&id=<%= title.getEmpNo() %>">Editar</a></td>
-            <td><a onclick="return confirm('¿Esta seguro de borrar?')" class="btn btn-danger" href="<%=request.getContextPath()%>/TitleServlet?action=del&id=<%= title.getEmpNo() %>">Borrar</a></td>
+            <td><a class="btn btn-success" href="<%=request.getContextPath()%>/TitleServlet?action=edit&id=<%= title.getEmpNo() %>&title=<%= title.getTitle() %>&date=<%= title.getFromDate() %>">Editar</a></td>
+            <td><a onclick="return confirm('¿Esta seguro de borrar?')" class="btn btn-danger" href="<%=request.getContextPath()%>/TitleServlet?action=del&id=<%= title.getEmpNo() %>&title=<%= title.getTitle() %>&date=<%= title.getFromDate() %>">Borrar</a></td>
         </tr>
         <% } %>
     </table>
