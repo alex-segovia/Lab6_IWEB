@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,11 +28,14 @@ public class EmployeeServlet extends HttpServlet {
 
         switch (action){
             case "lista":
+                int limit=Integer.parseInt(request.getParameter("limit"));
+                int offset=Integer.parseInt(request.getParameter("offset"));
                 //saca del modelo
-                ArrayList<Employee> list = employeeDao.list();
-
+                ArrayList<Employee> list = employeeDao.list(limit,offset);
                 //mandar la lista a la vista -> job/lista.jsp
                 request.setAttribute("lista",list);
+                request.setAttribute("limit",limit);
+                request.setAttribute("offset",limit);
                 RequestDispatcher rd = request.getRequestDispatcher("employee/lista.jsp");
                 rd.forward(request,response);
                 break;
@@ -81,12 +86,14 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "s":
                 String textBuscar = request.getParameter("textoBuscar");
-                ArrayList<Employee> lista = employeeDao.searchByName(textBuscar);
-
+                int limit=Integer.parseInt(request.getParameter("limit"));
+                int offset=Integer.parseInt(request.getParameter("offset"));
+                ArrayList<Employee> lista = employeeDao.searchByName(textBuscar,limit,offset);
                 request.setAttribute("lista",lista);
                 request.setAttribute("busqueda",textBuscar);
+                request.setAttribute("offset",request.getParameter("offset"));
+                request.setAttribute("limit",request.getParameter("limit"));
                 request.getRequestDispatcher("employee/lista.jsp").forward(request,response);
-
                 break;
         }
     }

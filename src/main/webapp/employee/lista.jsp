@@ -1,8 +1,13 @@
 
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.clase10crud.beans.Employee" %>
+<%@ page import="java.util.logging.StreamHandler" %>
+<%@ page import="java.util.random.RandomGenerator" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="lista" scope="request" type="ArrayList<Employee>" />
+<%ArrayList<Employee>lista=(ArrayList<Employee>) request.getAttribute("lista");
+    String offset=(String) request.getParameter("offset");
+    String limit=(String) request.getParameter("limit");
+%>
 <html>
     <head>
         <title>Trabajos</title>
@@ -25,6 +30,8 @@
                     <input type="text" class="form-control" id="floatingInput"
                            placeholder="Por ID o por nombre" name="textoBuscar" value="<%= request.getAttribute("busqueda") != null ? request.getAttribute("busqueda") : "" %>">
                     <label for="floatingInput">Buscar trabajo</label>
+                    <input type="hidden" name="offset" value="<%=offset%>">
+                    <input type="hidden" name="limit" value="<%=limit%>">
                 </div>
             </form>
             <table class="table table-striped mt-3">
