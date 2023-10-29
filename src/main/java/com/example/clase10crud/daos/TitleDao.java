@@ -9,7 +9,7 @@ public class TitleDao {
     private static final String username = "root";
     private static final String password = "root";
 
-    public ArrayList<Title> list(){
+    public ArrayList<Title> list(int limit, int offset){
 
         ArrayList<Title> lista = new ArrayList<>();
 
@@ -22,23 +22,24 @@ public class TitleDao {
         String url = "jdbc:mysql://localhost:3306/employees";
 
         // TODO: update query
-        String sql = "select * from titles limit 100";
+        String sql = "select * from titles limit ? offset ?";
 
 
         try (Connection conn = DriverManager.getConnection(url, username, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,limit);
+            pstmt.setInt(2,offset);
+            try(ResultSet rs = pstmt.executeQuery()){
+                while (rs.next()) {
+                    Title title = new Title();
+                    title.setEmpNo(rs.getInt(1));
+                    title.setTitle(rs.getString(2));
+                    title.setFromDate(rs.getString(3));
+                    title.setToDate(rs.getString(4));
 
-            while (rs.next()) {
-                Title title = new Title();
-                title.setEmpNo(rs.getInt(1));
-                title.setTitle(rs.getString(2));
-                title.setFromDate(rs.getString(3));
-                title.setToDate(rs.getString(4));
-
-                lista.add(title);
+                    lista.add(title);
+                }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
