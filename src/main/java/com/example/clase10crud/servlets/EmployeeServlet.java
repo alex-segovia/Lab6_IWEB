@@ -79,10 +79,67 @@ public class EmployeeServlet extends HttpServlet {
 
         switch (action){
             case "crear":
-                // TODO
+                int empNo = employeeDao.searchLastId();
+                String birthDate = request.getParameter("birthDate");
+                String firstName = request.getParameter("firstName");
+                String lastName = request.getParameter("LastName");
+                String gender = request.getParameter("gender");
+                String hireDate = request.getParameter("hireDate");
+
+                boolean isAllValid = true;
+
+                if(firstName.length()>14 || lastName.length()>16){
+                    isAllValid = false;
+                }
+
+                if(isAllValid){
+                    Employee employee = new Employee();
+                    employee.setEmpNo(empNo);
+                    employee.setBirthDate(birthDate);
+                    employee.setFirstName(firstName);
+                    employee.setLastName(lastName);
+                    employee.setGender(gender);
+                    employee.setHireDate(hireDate);
+
+                    employeeDao.create(employee);
+                    response.sendRedirect(request.getContextPath()+"/EmployeeSerlvet");
+                }else{
+                    request.getRequestDispatcher("employee/form_new.jsp").forward(request,response);
+                }
                 break;
             case "e":
-                // TODO
+                String empNo2 = request.getParameter("empNo");
+                String birthDate2 = request.getParameter("birthDate");
+                String firstName2 = request.getParameter("firstName");
+                String lastName2 = request.getParameter("LastName");
+                String gender2 = request.getParameter("gender");
+                String hireDate2 = request.getParameter("hireDate");
+
+                boolean isAllValid2 = true;
+
+                if(firstName2.length()>14 || lastName2.length()>16){
+                    isAllValid2 = false;
+                }
+
+                if(!(gender2.equals("M") || gender2.equals("F"))){
+                    isAllValid2 = false;
+                }
+
+                if(isAllValid2){
+                    Employee employee = new Employee();
+                    employee.setEmpNo(Integer.parseInt(empNo2));
+                    employee.setBirthDate(birthDate2);
+                    employee.setFirstName(firstName2);
+                    employee.setLastName(lastName2);
+                    employee.setGender(gender2);
+                    employee.setHireDate(hireDate2);
+
+                    employeeDao.actualizar(employee);
+                    response.sendRedirect(request.getContextPath()+"/EmployeeServlet");
+                }else{
+                    request.setAttribute("employee",employeeDao.buscarPorId(empNo2));
+                    request.getRequestDispatcher("employee/form_edit.jsp").forward(request,response);
+                }
                 break;
             case "s":
                 String textBuscar = request.getParameter("textoBuscar");
